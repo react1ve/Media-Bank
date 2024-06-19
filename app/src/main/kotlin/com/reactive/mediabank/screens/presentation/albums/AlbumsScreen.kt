@@ -30,7 +30,7 @@ fun AlbumsScreen(
     viewModel : AlbumsViewModel,
     isScrolling : MutableState<Boolean>,
 ) {
-    val state by viewModel.unPinnedAlbumsState.collectAsStateWithLifecycle()
+    val state by viewModel.albumsState.collectAsStateWithLifecycle()
     var lastCellIndex by rememberAlbumGridSize()
 
     val pinchState = rememberPinchZoomGridState(

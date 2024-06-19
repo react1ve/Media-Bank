@@ -10,29 +10,28 @@ import kotlinx.coroutines.flow.Flow
 
 interface MediaRepository {
 
-    fun getMedia(): Flow<Resource<List<Media>>>
+    fun getMedia() : Flow<Resource<List<Media>>>
 
-    fun getMediaByType(allowedMedia: AllowedMedia): Flow<Resource<List<Media>>>
+    fun getMediaByType(allowedMedia : AllowedMedia) : Flow<Resource<List<Media>>>
 
-    fun getFavorites(mediaOrder: MediaOrder): Flow<Resource<List<Media>>>
+    fun getAlbums(mediaOrder : MediaOrder) : Flow<Resource<List<Album>>>
 
-    fun getTrashed(): Flow<Resource<List<Media>>>
+    suspend fun getMediaById(mediaId : Long) : Media?
 
-    fun getAlbums(
-        mediaOrder: MediaOrder,
-        ignoreBlacklisted: Boolean = false
-    ): Flow<Resource<List<Album>>>
+    fun getMediaByAlbumId(albumId : Long) : Flow<Resource<List<Media>>>
 
-    suspend fun getMediaById(mediaId: Long): Media?
+    fun getMediaByAlbumIdWithType(
+        albumId : Long,
+        allowedMedia : AllowedMedia,
+    ) : Flow<Resource<List<Media>>>
 
-    fun getMediaByAlbumId(albumId: Long): Flow<Resource<List<Media>>>
+    fun getAlbumsWithType(allowedMedia : AllowedMedia) : Flow<Resource<List<Album>>>
 
-    fun getMediaByAlbumIdWithType(albumId: Long, allowedMedia: AllowedMedia): Flow<Resource<List<Media>>>
+    fun getMediaByUri(uriAsString : String, isSecure : Boolean) : Flow<Resource<List<Media>>>
 
-    fun getAlbumsWithType(allowedMedia: AllowedMedia): Flow<Resource<List<Album>>>
-
-    fun getMediaByUri(uriAsString: String, isSecure: Boolean): Flow<Resource<List<Media>>>
-
-    fun getMediaListByUris(listOfUris: List<Uri>, reviewMode: Boolean): Flow<Resource<List<Media>>>
+    fun getMediaListByUris(
+        listOfUris : List<Uri>,
+        reviewMode : Boolean,
+    ) : Flow<Resource<List<Media>>>
 
 }

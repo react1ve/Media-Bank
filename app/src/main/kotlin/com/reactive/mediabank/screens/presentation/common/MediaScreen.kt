@@ -22,7 +22,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -40,7 +39,6 @@ import com.reactive.mediabank.utils.MediaState
 import com.reactive.mediabank.utils.Settings.Misc.rememberGridSize
 import com.reactive.mediabank.utils.components.Error
 import com.reactive.mediabank.utils.components.LoadingMedia
-import com.reactive.mediabank.utils.components.NavigationActions
 import com.reactive.mediabank.utils.components.NavigationButton
 import kotlinx.coroutines.flow.StateFlow
 
@@ -70,10 +68,8 @@ fun MediaScreen(
     navigateUp : () -> Unit,
     toggleNavbar : (Boolean) -> Unit,
     isScrolling : MutableState<Boolean> = remember { mutableStateOf(false) },
-    searchBarActive : MutableState<Boolean> = mutableStateOf(false),
     onActivityResult : (result : ActivityResult) -> Unit,
 ) {
-    val showSearchBar = remember { albumId == -1L && target == null }
     var canScroll by rememberSaveable { mutableStateOf(true) }
     val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior(
         state = rememberTopAppBarState(),
@@ -106,43 +102,30 @@ fun MediaScreen(
     /** ************  **/
     Box {
         Scaffold(
-            modifier = Modifier
-                .then(
-                    if (!showSearchBar)
-                        Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
-                    else Modifier
-                ),
+            modifier = Modifier,
             topBar = {
-                if (!showSearchBar) {
-                    LargeTopAppBar(
-                        title = {
-                            TwoLinedDateToolbarTitle(
-                                albumName = albumName,
-                                dateHeader = state.dateHeader
-                            )
-                        },
-                        navigationIcon = {
-                            NavigationButton(
-                                albumId = albumId,
-                                target = target,
-                                navigateUp = navigateUp,
-                                clearSelection = {
-                                    selectionState.value = false
-                                    selectedMedia.clear()
-                                },
-                                selectionState = selectionState,
-                                alwaysGoBack = true,
-                            )
-                        },
-                        actions = {
-                            NavigationActions(
-                                actions = navActionsContent,
-                                onActivityResult = onActivityResult
-                            )
-                        },
-                        scrollBehavior = scrollBehavior
-                    )
-                }
+                LargeTopAppBar(
+                    title = {
+                        TwoLinedDateToolbarTitle(
+                            albumName = albumName,
+                            dateHeader = state.dateHeader
+                        )
+                    },
+                    navigationIcon = {
+                        NavigationButton(
+                            albumId = albumId,
+                            target = target,
+                            navigateUp = navigateUp,
+                            clearSelection = {
+                                selectionState.value = false
+                                selectedMedia.clear()
+                            },
+                            selectionState = selectionState,
+                            alwaysGoBack = true,
+                        )
+                    },
+                    scrollBehavior = scrollBehavior
+                )
             }
         ) { it ->
             PinchZoomGridLayout(state = pinchState) {
@@ -161,7 +144,6 @@ fun MediaScreen(
                 MediaGridView(
                     mediaState = state,
                     allowSelection = true,
-                    showSearchBar = showSearchBar,
                     searchBarPaddingTop = paddingValues.calculateTopPadding(),
                     enableStickyHeaders = enableStickyHeaders,
                     paddingValues = PaddingValues(
@@ -188,7 +170,8 @@ fun MediaScreen(
                 AnimatedVisibility(visible = showError) {
                     Error(errorMessage = state.error)
                 }
-                val showEmpty = remember(state) { state.media.isEmpty() && !state.isLoading && !showError }
+                val showEmpty =
+                    remember(state) { state.media.isEmpty() && !state.isLoading && !showError }
                 AnimatedVisibility(visible = showEmpty) {
                     emptyContent.invoke()
                 }

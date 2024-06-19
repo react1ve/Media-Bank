@@ -13,6 +13,5 @@ class GetAlbumsUseCase(
 
     operator fun invoke(
         mediaOrder : MediaOrder = MediaOrder.Date(OrderType.Descending),
-        ignoreBlacklisted : Boolean = false,
-    ) : Flow<Resource<List<Album>>> = repository.getAlbums(mediaOrder, ignoreBlacklisted)
+    ) : Flow<Resource<List<Album>>> = repository.getAlbums(mediaOrder)
 }

@@ -12,18 +12,13 @@ import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -41,40 +36,33 @@ import com.reactive.mediabank.screens.domain.model.Media
 import com.reactive.mediabank.screens.domain.model.MediaEqualityDelegate
 import com.reactive.mediabank.screens.presentation.mediaview.components.video.VideoDurationHeader
 import com.reactive.mediabank.utils.Constants.Animation
-import com.reactive.mediabank.utils.components.CheckBox
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun MediaImage(
-    modifier: Modifier = Modifier,
-    media: Media,
-    selectionState: MutableState<Boolean>,
-    selectedMedia: SnapshotStateList<Media>,
-    canClick: Boolean,
-    onItemClick: (Media) -> Unit,
-    onItemLongClick: (Media) -> Unit,
+    modifier : Modifier = Modifier,
+    media : Media,
+    selectionState : MutableState<Boolean>,
+    canClick : Boolean,
+    onItemClick : (Media) -> Unit,
+    onItemLongClick : (Media) -> Unit,
 ) {
-    var isSelected by remember { mutableStateOf(false) }
-    LaunchedEffect(selectionState.value, selectedMedia.size) {
-        isSelected = if (!selectionState.value) false else {
-            selectedMedia.find { it.id == media.id } != null
-        }
-    }
+
     val selectedSize by animateDpAsState(
-        if (isSelected) 12.dp else 0.dp, label = "selectedSize"
+        0.dp, label = "selectedSize"
     )
     val scale by animateFloatAsState(
-        if (isSelected) 0.5f else 1f, label = "scale"
+        1f, label = "scale"
     )
     val selectedShapeSize by animateDpAsState(
-        if (isSelected) 16.dp else 0.dp, label = "selectedShapeSize"
+        0.dp, label = "selectedShapeSize"
     )
     val strokeSize by animateDpAsState(
-        targetValue = if (isSelected) 2.dp else 0.dp, label = "strokeSize"
+        targetValue = 0.dp, label = "strokeSize"
     )
     val primaryContainerColor = MaterialTheme.colorScheme.primaryContainer
     val strokeColor by animateColorAsState(
-        targetValue = if (isSelected) primaryContainerColor else Color.Transparent,
+        targetValue = Color.Transparent,
         label = "strokeColor"
     )
     val painter = rememberAsyncImagePainter(
@@ -94,15 +82,9 @@ fun MediaImage(
                 enabled = canClick,
                 onClick = {
                     onItemClick(media)
-                    if (selectionState.value) {
-                        isSelected = !isSelected
-                    }
                 },
                 onLongClick = {
                     onItemLongClick(media)
-                    if (selectionState.value) {
-                        isSelected = !isSelected
-                    }
                 },
             )
             .aspectRatio(1f)
@@ -146,20 +128,6 @@ fun MediaImage(
                     .scale(scale),
                 media = media
             )
-        }
-
-        AnimatedVisibility(
-            visible = selectionState.value,
-            enter = Animation.enterAnimation,
-            exit = Animation.exitAnimation
-        ) {
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(4.dp)
-            ) {
-                CheckBox(isChecked = isSelected)
-            }
         }
     }
 }

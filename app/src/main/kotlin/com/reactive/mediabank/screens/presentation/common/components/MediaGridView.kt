@@ -153,8 +153,6 @@ fun PinchZoomGridScope.MediaGridView(
                                         .replace("Yesterday", stringYesterday)
                                 },
                                 showAsBig = remember { item.key.isBigHeaderKey },
-                                isCheckVisible = selectionState,
-                                isChecked = isChecked
                             ) {
                                 if (allowSelection) {
                                     feedbackManager.vibrate()
@@ -178,7 +176,6 @@ fun PinchZoomGridScope.MediaGridView(
                                     .pinchItem(key = it.key),
                                 media = (item as MediaItem.MediaViewItem).media,
                                 selectionState = selectionState,
-                                selectedMedia = selectedMedia,
                                 canClick = canScroll,
                                 onItemClick = {
                                     if (selectionState.value && allowSelection) {
@@ -206,7 +203,6 @@ fun PinchZoomGridScope.MediaGridView(
                                 .pinchItem(key = media.toString()),
                             media = media,
                             selectionState = selectionState,
-                            selectedMedia = selectedMedia,
                             canClick = canScroll,
                             onItemClick = {
                                 if (selectionState.value && allowSelection) {

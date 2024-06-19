@@ -154,9 +154,6 @@ dependencies {
     // Fuzzy Search
     implementation(libs.fuzzywuzzy)
 
-    // GPU Image
-    implementation(libs.gpuimage)
-
     // Pinch to zoom
     implementation(libs.pinchzoomgrid)
 

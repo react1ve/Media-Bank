@@ -69,8 +69,7 @@ fun TimelineScreen(
         navigate = navigate,
         navigateUp = navigateUp,
         toggleNavbar = toggleNavbar,
-        isScrolling = isScrolling,
-        searchBarActive = searchBarActive
+        isScrolling = isScrolling
     ) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
             selectedMedia.clear()

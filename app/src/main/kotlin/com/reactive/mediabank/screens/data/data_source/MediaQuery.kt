@@ -20,37 +20,7 @@ sealed class Query(
             MediaStore.MediaColumns.BUCKET_DISPLAY_NAME,
             MediaStore.MediaColumns.DURATION,
             MediaStore.MediaColumns.MIME_TYPE,
-//            MediaStore.MediaColumns.IS_FAVORITE,
-            MediaStore.MediaColumns.IS_TRASHED
         ),
-    )
-
-    class TrashQuery : Query(
-        projection = arrayOf(
-            MediaStore.MediaColumns._ID,
-            MediaStore.MediaColumns.DATA,
-            MediaStore.MediaColumns.RELATIVE_PATH,
-            MediaStore.MediaColumns.DISPLAY_NAME,
-            MediaStore.MediaColumns.BUCKET_ID,
-            MediaStore.MediaColumns.DATE_MODIFIED,
-            MediaStore.MediaColumns.DATE_EXPIRES,
-            MediaStore.MediaColumns.BUCKET_DISPLAY_NAME,
-            MediaStore.MediaColumns.DURATION,
-            MediaStore.MediaColumns.MIME_TYPE,
-//            MediaStore.MediaColumns.IS_FAVORITE,
-            MediaStore.MediaColumns.IS_TRASHED
-        ),
-        bundle = Bundle().apply {
-            putStringArray(
-                ContentResolver.QUERY_ARG_SORT_COLUMNS,
-                arrayOf(MediaStore.MediaColumns.DATE_EXPIRES)
-            )
-            putInt(
-                ContentResolver.QUERY_ARG_SQL_SORT_ORDER,
-                ContentResolver.QUERY_SORT_DIRECTION_DESCENDING
-            )
-            putInt(MediaStore.QUERY_ARG_MATCH_TRASHED, MediaStore.MATCH_ONLY)
-        }
     )
 
     class PhotoQuery: Query(
@@ -65,8 +35,6 @@ sealed class Query(
             MediaStore.MediaColumns.BUCKET_DISPLAY_NAME,
             MediaStore.MediaColumns.DURATION,
             MediaStore.MediaColumns.MIME_TYPE,
-//            MediaStore.MediaColumns.IS_FAVORITE,
-            MediaStore.MediaColumns.IS_TRASHED
         ),
         bundle = defaultBundle.apply {
             putString(
@@ -92,8 +60,6 @@ sealed class Query(
             MediaStore.MediaColumns.DURATION,
             MediaStore.MediaColumns.MIME_TYPE,
             MediaStore.MediaColumns.ORIENTATION,
-//            MediaStore.MediaColumns.IS_FAVORITE,
-            MediaStore.MediaColumns.IS_TRASHED
         ),
         bundle = defaultBundle.apply {
             putString(

@@ -6,7 +6,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.aspectRatio
@@ -121,8 +120,7 @@ fun AlbumImage(
     onItemClick : (Album) -> Unit,
 ) {
     val interactionSource = remember { MutableInteractionSource() }
-    val isPressed = interactionSource.collectIsPressedAsState()
-    val radius = if (isPressed.value) 32.dp else 16.dp
+    val radius = 16.dp
     val cornerRadius by animateDpAsState(targetValue = radius, label = "cornerRadius")
     if (album.id == -200L && album.count == 0L) {
         Icon(

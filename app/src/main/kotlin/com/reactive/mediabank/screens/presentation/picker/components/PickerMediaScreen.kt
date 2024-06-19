@@ -76,9 +76,7 @@ fun PickerMediaScreen(
                         .replace("Yesterday", stringYesterday)
                     StickyHeader(
                         date = title,
-                        showAsBig = item.key.contains("big"),
-                        isCheckVisible = isCheckVisible,
-                        isChecked = isChecked
+                        showAsBig = item.key.contains("big")
                     ) {
                         if (allowSelection) {
                             feedbackManager.vibrate()
@@ -102,7 +100,6 @@ fun PickerMediaScreen(
                         modifier = Modifier.animateItemPlacement(),
                         media = item.media,
                         selectionState = selectionState,
-                        selectedMedia = selectedMedia,
                         canClick = true,
                         onItemClick = {
                             feedbackManager.vibrate()
